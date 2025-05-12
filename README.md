@@ -1,61 +1,120 @@
-# INSTALLATION
+# WireGuard Manager with Bandwidth Control
+
+Complete lifecycle management system for WireGuard VPN with quota enforcement and admin controls.
+
+## Features
+- Client lifecycle management (create/delete/list)
+- Bandwidth quotas & admin exceptions
+- Persistent iptables rules
+- Automatic IP assignment
+- Usage monitoring
+- Config file management
+
+## Installation
+```bash
 sudo apt update && sudo apt install -y wireguard iptables-persistent python3
 chmod +x wg-manager.py
+```
 
-# SERVER SETUP (run once)
+## Server Initialization (Run Once)
+```bash
 sudo ./wg-manager.py add -n 0
+```
 
-# CLIENT MANAGEMENT
-# Add 100 regular clients
+## Client Management
+
+### Add Clients
+```bash
+# Add 100 regular clients (50GB quota each)
 sudo ./wg-manager.py add -n 100
 
-# Add 5 admin clients
+# Add 5 admin clients (unlimited bandwidth)
 sudo ./wg-manager.py add -n 5 -p admin --admin
 
-# Add single client
+# Add single client with custom prefix
 sudo ./wg-manager.py add -n 1 -p user123
+```
 
-# Delete client
+### Remove Client
+```bash
 sudo ./wg-manager.py delete --username client001
+```
 
-# List all clients
+### List Clients
+```bash
 sudo ./wg-manager.py list
+```
 
-# Show bandwidth usage
+### Monitor Usage
+```bash
 sudo ./wg-manager.py usage
+```
 
-# CONFIGURATION FILES
-# View client configs
-sudo ls ~/wireguard_clients
-
-# Download config (from local machine)
+## Configuration Files
+Client configs are stored in `~/wireguard_clients/`. To download:
+```bash
 scp root@your-server:~/wireguard_clients/client001.conf .
+```
 
-# BANDWIDTH CONTROL
-# Reset quota for client (run monthly)
+## Bandwidth Management
+### Reset Monthly Quota (1TB example)
+```bash
 sudo iptables -D FORWARD -s 10.0.0.2 -j DROP
 sudo iptables -A FORWARD -s 10.0.0.2 -m quota --quota 107374182400 -j ACCEPT
 sudo iptables -A FORWARD -s 10.0.0.2 -j DROP
 sudo netfilter-persistent save
+```
 
-# MONITORING
-# Live traffic monitoring
+## Monitoring
+### Live Traffic
+```bash
 sudo watch -n 1 "wg show"
+```
 
-# Bandwidth test (server)
+### Bandwidth Tests
+```bash
+# Server
 iperf3 -s
 
-# Bandwidth test (client)
+# Client
 iperf3 -c SERVER_IP -P 10
+```
+
+## Service Management
+```bash
+# Restart WireGuard
+sudo systemctl restart wg-quick@wg0
+
+# Check status
+sudo systemctl status wg-quick@wg0
+
+# View logs
+journalctl -u wg-quick@wg0 -f
+```
+
+## Client Deployment Tips
+- Share configs securely
+- Replace `$SERVER_IP` in configs
+- Generate QR codes:  
+  `qrencode -t ansiutf8 < client.conf`
+
+## Important Notes
+- **Always run with sudo**
+- Default quota: 50GB per non-admin client
+- Admin clients bypass bandwidth restrictions
+- Config files contain private keys - handle securely!
+- All changes persist across reboots
+
+---
+
+## Usage Flow
+1. Initialize server once
+2. Add clients as needed
+3. Delete clients when access should be revoked
+4. Monitor usage periodically
+
+---
 
 
-USAGE FLOW :
-
-1 INITIALIZE SERVER ONCE 
-2 ADD CLIENTS AS NEEDED
-3 DELETE CLIENTS WHEN ACCESS SHOULD BE REVOKED
-4 MONITOR USAGE PERIODICALLY
-
-
-THE SCRIPT PROVIDES COMPLETE LIFECYCLE MANAGEMENT FOR WIREGUARD CLIENTS WITH 
-BANDWITH CONTROLS.ALL CHANGES ARE PERSISTENT ACROSS REBOOTS.
+*For support issues, please open a GitHub ticket.*
+```
