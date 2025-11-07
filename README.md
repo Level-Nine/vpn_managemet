@@ -116,14 +116,4 @@ journalctl -u wg-quick@wg0 -f
 ---
 
 
-*For support issues, please open a GitHub ticket or Telegram
-https://t.me/level_nine_proxy_support
-
-# Follow me on 
-* Telegram    : https://t.me/level_nine_proxy , https://t.me/level_nine_proxy_group
-* Facebook    : 
-* Instagram   :
-* Whatsapp    :
-* Youtube     :
-* Tic Tok     :
-  
+*For support issues, please open a GitHub ticket  
