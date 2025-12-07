@@ -1,0 +1,28 @@
+# WireGuard Management System Requirements
+# Minimum requirements for both CLI and API functionality
+
+# Core requirements
+Flask==3.0.0
+Werkzeug==3.0.1
+Jinja2==3.1.2
+itsdangerous==2.1.2
+click==8.1.7
+
+# For QR code generation in API mode
+qrcode[pil]==7.4.2
+Pillow==10.1.0
+
+# For backup/restore operations (optional but recommended)
+python-dateutil==2.8.2
+
+# Development/testing requirements (optional)
+# --------------------------------------------
+# pytest==7.4.3
+# pytest-cov==4.1.0
+# black==23.11.0
+# flake8==6.1.0
+# mypy==1.7.0
+# Minimal requirements for API functionality
+Flask>=2.3.3
+Werkzeug>=2.3.7
+qrcode>=7.4
