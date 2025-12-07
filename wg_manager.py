@@ -4,6 +4,7 @@ Usage:
 - Direct CLI: sudo python3 wg_manager.py <command>
 - Remote API: curl -u admin:PASSWORD http://server:5000/api/...
 """
+#!/usr/bin/env python3
 import os
 import subprocess
 import argparse
@@ -1246,3 +1247,4 @@ Examples:
 
 if __name__ == "__main__":
     cli_main()
+
